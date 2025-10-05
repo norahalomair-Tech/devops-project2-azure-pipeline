@@ -52,6 +52,9 @@ locals {
     private_subnet = {
       address_space = ["10.0.3.0/24"]
     }
+    appgw_subnet = {              
+      address_space = ["10.0.1.0/24"]
+    }
   }
 }
 
