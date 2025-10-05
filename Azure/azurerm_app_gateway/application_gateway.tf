@@ -43,12 +43,15 @@ resource "azurerm_application_gateway" "app_gateway" {
   }
 
   backend_http_settings {
-    name                  = "httpSettings"
-    cookie_based_affinity = "Disabled"
-    port                  = 80
-    protocol              = "Http"
-    request_timeout       = 30
-  }
+  name                  = "httpsSettings"
+  cookie_based_affinity = "Disabled"
+  port                  = 443
+  protocol              = "Https"
+  request_timeout       = 60
+
+  pick_host_name_from_backend_address = true
+}
+
 
   http_listener {
     name                           = "appGatewayHttpListener"
