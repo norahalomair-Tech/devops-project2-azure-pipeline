@@ -40,10 +40,11 @@ jobs:
       - name: 🏗️ Build & Push Frontend (Vite)
         run: |
           docker build --platform linux/amd64 \
-            --build-arg VITE_API_BASE_URL=${{ steps.backend_url.outputs.backend_url }} \
-            -t ${{ env.FE_IMAGE }}:${{ steps.version.outputs.frontend }} \
-            -t ${{ env.FE_IMAGE }}:latest \
-            ./ecommerce-app-frontend
+          --build-arg VITE_API_BASE_URL=${{ steps.backend_url.outputs.backend_url }} \
+          -t ${{ env.FE_IMAGE }}:${{ steps.version.outputs.frontend }} \
+          -t ${{ env.FE_IMAGE }}:latest \
+          ./frontend
+
 
           docker push ${{ env.FE_IMAGE }}:${{ steps.version.outputs.frontend }}
           docker push ${{ env.FE_IMAGE }}:latest
