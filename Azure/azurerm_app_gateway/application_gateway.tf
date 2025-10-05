@@ -43,7 +43,7 @@ resource "azurerm_application_gateway" "app_gateway" {
   }
 
   backend_http_settings {
-  name                  = "backend_http_settings"
+  name                  = "httpSettings"
   cookie_based_affinity = "Disabled"
   port                  = 443
   protocol              = "Https"
