@@ -34,7 +34,7 @@ jobs:
       - name: 🌐 Set Backend URL
         id: backend_url
         run: |
-          BACKEND_URL="https://be-project2-aalhatlan.azurewebsites.net"
+          BACKEND_URL="http://4.210.178.108"
           echo "backend_url=$BACKEND_URL" >> $GITHUB_OUTPUT
 
       - name: 🏗️ Build & Push Frontend (Vite)
