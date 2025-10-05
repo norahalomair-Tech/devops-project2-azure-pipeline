@@ -23,6 +23,13 @@ provider "azurerm" {
 }
 
 
+variable "sql_admin_password" {
+  type        = string
+  description = "SQL administrator password for the database"
+  sensitive   = true
+}
+
+
 locals {
   resource_group_name = "project2-rg-aalhatlan"
   vnet_name           = "project2-vnet-aalhatlan"

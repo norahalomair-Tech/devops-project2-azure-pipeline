@@ -12,7 +12,9 @@ jobs:
     defaults:
       run:
         working-directory: example01
-
+        
+    env:
+      TF_VAR_sql_admin_password: ${{ secrets.SQL_ADMIN_PASSWORD }}
     
     steps:
       - name: Checkout Code

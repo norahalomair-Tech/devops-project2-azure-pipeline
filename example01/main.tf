@@ -37,4 +37,17 @@ module "webapp" {
   fe_tag               = "latest"
 }
 
+module "sql" {
+  source = "../Azure/azurerm_sql"
+
+  resource_group_name = module.resource_group.name
+  location            = local.location
+
+  sql_server_name     = "project2-sqlserver-aalhatlan"
+  sql_database_name   = "project2db"
+  sql_admin_username  = "ahmad"
+  sql_admin_password  = var.sql_admin_password 
+
+  tags = local.tags
+}
 
