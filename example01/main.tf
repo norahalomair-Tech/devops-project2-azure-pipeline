@@ -62,3 +62,14 @@ module "sql" {
   tags = local.tags
 }
 
+module "app_gateway" {
+  source = "../Azure/azurerm_app_gateway"
+
+  prefix              = "project2"
+  location            = local.location
+  resource_group_name = module.resource_group.resource_group.name
+  subnet_id           = module.subnets["public_subnet"].subnet_id
+
+  frontend_fqdn = module.webapp.frontend_hostname
+  backend_fqdn  = module.webapp.backend_hostname
+}

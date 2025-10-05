@@ -60,7 +60,6 @@ resource "azurerm_linux_web_app" "backend_app" {
     health_check_eviction_time_in_min = 5
   }
 
-  # 📝 إعدادات البيئة للاتصال بقاعدة البيانات
   app_settings = {
    "SPRING_PROFILES_ACTIVE" = "azure"
    "DB_HOST"               = "project2-sqlserver-aalhatlan.database.windows.net"
