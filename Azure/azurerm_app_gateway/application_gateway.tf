@@ -32,26 +32,49 @@ resource "azurerm_application_gateway" "app_gateway" {
     port = 80
   }
 
+  # Frontend Pool
   backend_address_pool {
     name  = "frontend-backend-pool"
     fqdns = [var.frontend_fqdn]
   }
 
+  # Backend Pool
   backend_address_pool {
     name  = "backend-backend-pool"
     fqdns = [var.backend_fqdn]
   }
 
+  # 🟦 Frontend Backend Settings
   backend_http_settings {
-  name                  = "httpSettings"
-  cookie_based_affinity = "Disabled"
-  port                  = 443
-  protocol              = "Https"
-  request_timeout       = 60
+    name                           = "frontend-http-settings"
+    cookie_based_affinity          = "Disabled"
+    port                           = 443
+    protocol                       = "Https"
+    request_timeout                = 60
+    pick_host_name_from_backend_address = true
+  }
 
-  pick_host_name_from_backend_address = true
-}
+  # 🟧 Backend API Settings
+  backend_http_settings {
+    name                           = "backend-http-settings"
+    cookie_based_affinity          = "Disabled"
+    port                           = 443
+    protocol                       = "Https"
+    request_timeout                = 60
+    pick_host_name_from_backend_address = true
+    probe_name                     = "backend-probe"
+  }
 
+  # ✅ Custom Probe for Backend (api health)
+  probe {
+    name                = "backend-probe"
+    protocol            = "Https"
+    path                = "/api/ingredients"
+    interval            = 30
+    timeout             = 30
+    unhealthy_threshold = 3
+    pick_host_name_from_backend_http_settings = true
+  }
 
   http_listener {
     name                           = "appGatewayHttpListener"
@@ -61,23 +84,24 @@ resource "azurerm_application_gateway" "app_gateway" {
   }
 
   request_routing_rule {
-    name                = "main-routing-rule"
-    rule_type           = "PathBasedRouting"
-    priority            = 100
-    http_listener_name  = "appGatewayHttpListener"
-    url_path_map_name   = "backend-path-map"
+    name               = "main-routing-rule"
+    rule_type          = "PathBasedRouting"
+    priority           = 100
+    http_listener_name = "appGatewayHttpListener"
+    url_path_map_name  = "backend-path-map"
   }
 
   url_path_map {
-    name                               = "backend-path-map"
+    name = "backend-path-map"
+
     default_backend_address_pool_name  = "frontend-backend-pool"
-    default_backend_http_settings_name = "httpSettings"
+    default_backend_http_settings_name = "frontend-http-settings"
 
     path_rule {
       name                       = "api-rule"
       paths                      = ["/api/*"]
       backend_address_pool_name  = "backend-backend-pool"
-      backend_http_settings_name = "httpSettings"
+      backend_http_settings_name = "backend-http-settings"
     }
   }
 }
