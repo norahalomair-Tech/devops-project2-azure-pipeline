@@ -60,6 +60,7 @@ resource "azurerm_application_gateway" "app_gateway" {
   request_routing_rule {
     name                       = "frontend-route"
     rule_type                  = "Basic"
+    priority                    = 100
     http_listener_name         = "appGatewayHttpListener"
     backend_address_pool_name  = "frontend-backend-pool"
     backend_http_settings_name = "httpSettings"
@@ -68,6 +69,7 @@ resource "azurerm_application_gateway" "app_gateway" {
   request_routing_rule {
     name                       = "backend-route"
     rule_type                  = "PathBasedRouting"
+    priority                    = 100
     http_listener_name         = "appGatewayHttpListener"
     url_path_map_name          = "backend-path-map"
   }
