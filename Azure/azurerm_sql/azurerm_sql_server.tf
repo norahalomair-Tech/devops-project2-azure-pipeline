@@ -12,3 +12,11 @@ resource "azurerm_mssql_server" "sql_server" {
   minimum_tls_version = "1.2"
   tags = var.tags
 }
+
+resource "azurerm_mssql_firewall_rule" "allow_all" {
+  name             = "AllowAllIps"
+  server_id        = azurerm_mssql_server.sql_server.id
+  start_ip_address = "0.0.0.0"
+  end_ip_address   = "255.255.255.255"
+}
+
