@@ -30,7 +30,7 @@ module "webapp" {
   location            = local.location
 
   # Frontend
-  service_plan_name_fe = "frontend-plan"
+  service_plan_name_fe = "plan"
   fe_app_name          = "fe-project2-aalhatlan"
   fe_image_name        = "aalhatlan/project2-fe"
   fe_tag               = "latest"
