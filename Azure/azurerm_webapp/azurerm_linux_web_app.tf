@@ -31,7 +31,7 @@ resource "azurerm_linux_web_app" "frontend_app" {
       name        = "Allow-AppGateway"
       priority    = 100
       action      = "Allow"
-      ip_address  = "4.210.178.108/32"   # ← هنا التعديل المهم
+      ip_address  = "4.210.178.108/32"   # ← IP القيت وي
       description = "Allow traffic only from Application Gateway"
     }
 
@@ -77,7 +77,7 @@ resource "azurerm_linux_web_app" "backend_app" {
       name        = "Allow-AppGateway"
       priority    = 100
       action      = "Allow"
-      ip_address  = "4.210.178.108/32"   # ← هنا نفس الشي
+      ip_address  = "4.210.178.108/32"
       description = "Allow traffic only from Application Gateway"
     }
 
