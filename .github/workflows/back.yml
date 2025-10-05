@@ -34,7 +34,7 @@ jobs:
       - name: 🏗️ Build & Push Backend
         uses: docker/build-push-action@v6
         with:
-          context: ./ecommerce-app-backend
+          context: ./backend
           push: true
           tags: |
             ${{ env.BE_IMAGE }}:${{ steps.version.outputs.backend }}
