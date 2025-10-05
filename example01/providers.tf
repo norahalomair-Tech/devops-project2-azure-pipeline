@@ -5,7 +5,17 @@ terraform {
       version = "4.26.0"
     }
   }
+
+  backend "azurerm" {
+    resource_group_name   = "tfstate-rg-project2"
+    storage_account_name  = "tfstate14175"
+    container_name        = "tfstate"
+    key                   = "project2.terraform.tfstate"
+  }
 }
+
+
+
 
 provider "azurerm" {
   features {}
