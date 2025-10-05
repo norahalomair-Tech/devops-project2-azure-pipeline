@@ -44,3 +44,36 @@ variable "public_access" {
   description = "تمكين أو تعطيل الوصول العام للتطبيق"
   default     = true
 }
+
+variable "be_app_name" {
+  type        = string
+  description = "اسم تطبيق الـ Backend في Azure"
+}
+
+variable "service_plan_name_be" {
+  type        = string
+  description = "اسم خطة الخدمة للـ Backend"
+}
+
+variable "be_sku" {
+  type        = string
+  description = "SKU لخطة الخدمة للـ Backend"
+  default     = "P1v2"
+}
+
+variable "be_image_name" {
+  type        = string
+  description = "اسم صورة Docker الخاصة بالـ Backend"
+}
+
+variable "be_tag" {
+  type        = string
+  description = "Tag لصورة Docker الخاصة بالـ Backend"
+  default     = "latest"
+}
+
+variable "sql_admin_password" {
+  type        = string
+  description = "SQL administrator password"
+  sensitive   = true
+}

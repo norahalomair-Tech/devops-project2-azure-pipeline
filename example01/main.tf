@@ -26,16 +26,27 @@ module "subnets" {
 
 module "webapp" {
   source = "../Azure/azurerm_webapp"
+  resource_group_name = module.resource_group.name
+  location            = local.location
 
-  resource_group_name  = local.resource_group_name
-  location             = local.location
-  service_plan_name_fe = "plan"
-  fe_sku               = "P1v2"
+  # Frontend
+  service_plan_name_fe = "frontend-plan"
   fe_app_name          = "fe-project2-aalhatlan"
-  public_access        = true
   fe_image_name        = "aalhatlan/project2-fe"
   fe_tag               = "latest"
+  fe_sku               = "P1v2"
+  public_access        = true
+
+  # Backend
+  service_plan_name_be = "backend-plan"
+  be_app_name          = "be-project2-aalhatlan"
+  be_image_name        = "aalhatlan/project2-be"
+  be_tag               = "latest"
+  be_sku               = "P1v2"
+
+  sql_admin_password = var.sql_admin_password
 }
+
 
 module "sql" {
   source = "../Azure/azurerm_sql"
