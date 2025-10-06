@@ -90,14 +90,14 @@ variable "backend_subnet_id" {
   default     = null
 }
 
-variable "frontend_allowed_subnet_id" {
-  description = "Subnet allowed to reach the frontend web app"
+variable "frontend_allowed_cidr" {
+  description = "CIDR block allowed to reach the frontend web app"
   type        = string
   default     = null
 }
 
-variable "backend_allowed_subnet_id" {
-  description = "Subnet allowed to reach the backend web app"
+variable "backend_allowed_cidr" {
+  description = "CIDR block allowed to reach the backend web app"
   type        = string
   default     = null
 }

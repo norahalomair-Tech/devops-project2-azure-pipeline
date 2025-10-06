@@ -48,10 +48,10 @@ module "webapp" {
 
   sql_admin_password = var.sql_admin_password
 
-  frontend_subnet_id         = module.subnets["frontend"].subnet_id
-  backend_subnet_id          = module.subnets["backend"].subnet_id
-  frontend_allowed_subnet_id = module.subnets["appgw_subnet"].subnet_id
-  backend_allowed_subnet_id  = module.subnets["appgw_subnet"].subnet_id
+  frontend_subnet_id    = module.subnets["frontend"].subnet_id
+  backend_subnet_id     = module.subnets["backend"].subnet_id
+  frontend_allowed_cidr = module.subnets["appgw_subnet"].subnet.address_prefixes[0]
+  backend_allowed_cidr  = module.subnets["appgw_subnet"].subnet.address_prefixes[0]
 }
 
 
