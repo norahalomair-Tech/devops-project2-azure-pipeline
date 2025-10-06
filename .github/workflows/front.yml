@@ -1,4 +1,4 @@
-name: " Build & Push Frontend (Vite) - Project 2"
+name: " Build & Push Frontend (Vite)- Project 2"
 
 on:
   push:
