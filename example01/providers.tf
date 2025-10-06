@@ -7,10 +7,10 @@ terraform {
   }
 
   backend "azurerm" {
-    resource_group_name   = "tfstate-rg-project2"
-    storage_account_name  = "tfstate14175"
-    container_name        = "tfstate"
-    key                   = "project2.terraform.tfstate"
+    resource_group_name  = "tfstate-rg-project2"
+    storage_account_name = "tfstate14175"
+    container_name       = "tfstate"
+    key                  = "project2.terraform.tfstate"
   }
 }
 
@@ -34,7 +34,7 @@ locals {
   resource_group_name = "project2-rg-aalhatlan"
   vnet_name           = "project2-vnet-aalhatlan"
   location            = "West Europe"
-  
+
 
 
   tags = {
@@ -42,19 +42,43 @@ locals {
   }
 
   address_space = ["10.0.0.0/16"]
-  
-  
+
+
 
   subnet = {
-    public_subnet = {
+    frontend = {
+      name          = "frontend-subnet"
       address_space = ["10.0.2.0/24"]
+      delegation = {
+        name = "frontend-appservice-delegation"
+        service_delegation = {
+          name    = "Microsoft.Web/serverFarms"
+          actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+        }
+      }
     }
-    private_subnet = {
+
+    backend = {
+      name          = "backend-subnet"
       address_space = ["10.0.3.0/24"]
+      delegation = {
+        name = "backend-appservice-delegation"
+        service_delegation = {
+          name    = "Microsoft.Web/serverFarms"
+          actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+        }
+      }
     }
-    appgw_subnet = {              
+
+    app_gateway = {
+      name          = "appgw-subnet"
       address_space = ["10.0.1.0/24"]
+    }
+
+    sql = {
+      name              = "sql-subnet"
+      address_space     = ["10.0.4.0/24"]
+      service_endpoints = ["Microsoft.Sql"]
     }
   }
 }
-

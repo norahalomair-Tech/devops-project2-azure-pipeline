@@ -77,3 +77,15 @@ variable "sql_admin_password" {
   description = "SQL administrator password"
   sensitive   = true
 }
+
+variable "frontend_subnet_id" {
+  description = "Subnet ID used for frontend web app VNet integration"
+  type        = string
+  default     = null
+}
+
+variable "backend_subnet_id" {
+  description = "Subnet ID used for backend web app VNet integration"
+  type        = string
+  default     = null
+}

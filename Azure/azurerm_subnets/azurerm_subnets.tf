@@ -3,13 +3,19 @@ resource "azurerm_subnet" "subnet" {
   name                 = var.name
   virtual_network_name = var.vnet_name
   address_prefixes     = var.address_prefixes
-}
+  service_endpoints    = var.service_endpoints
 
-# Subnet for Application Gateway
-resource "azurerm_subnet" "app_gateway_subnet" {
-  name                 = "appgw_subnet"
-  resource_group_name  = var.resource_group_name
-  virtual_network_name = var.vnet_name
-  address_prefixes     = ["10.0.1.0/24"]
+  dynamic "delegation" {
+    for_each = var.delegation == null ? [] : [var.delegation]
+
+    content {
+      name = delegation.value.name
+
+      service_delegation {
+        name    = delegation.value.service_delegation.name
+        actions = delegation.value.service_delegation.actions
+      }
+    }
+  }
 }
 

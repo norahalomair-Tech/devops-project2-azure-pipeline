@@ -17,15 +17,17 @@ module "vnet" {
 module "subnets" {
   source              = "../Azure/azurerm_subnets"
   for_each            = local.subnet
-  name                = each.key
+  name                = try(each.value.name, each.key)
   resource_group_name = module.resource_group.resource_group.name
   vnet_name           = module.vnet.virtual_network.name
   address_prefixes    = each.value.address_space
+  service_endpoints   = try(each.value.service_endpoints, [])
+  delegation          = try(each.value.delegation, null)
 }
 
 
 module "webapp" {
-  source = "../Azure/azurerm_webapp"
+  source              = "../Azure/azurerm_webapp"
   resource_group_name = module.resource_group.name
   location            = local.location
 
@@ -45,6 +47,9 @@ module "webapp" {
   be_sku               = "P1v2"
 
   sql_admin_password = var.sql_admin_password
+
+  frontend_subnet_id = module.subnets["frontend"].subnet_id
+  backend_subnet_id  = module.subnets["backend"].subnet_id
 }
 
 
@@ -54,10 +59,10 @@ module "sql" {
   resource_group_name = module.resource_group.name
   location            = local.location
 
-  sql_server_name     = "project2-sqlserver-aalhatlan"
-  sql_database_name   = "project2db"
-  sql_admin_username  = "ahmad"
-  sql_admin_password  = var.sql_admin_password 
+  sql_server_name    = "project2-sqlserver-aalhatlan"
+  sql_database_name  = "project2db"
+  sql_admin_username = "ahmad"
+  sql_admin_password = var.sql_admin_password
 
   tags = local.tags
 }
@@ -68,7 +73,7 @@ module "app_gateway" {
   prefix              = "project2"
   location            = local.location
   resource_group_name = module.resource_group.resource_group.name
-  subnet_id           = module.subnets["appgw_subnet"].subnet_id
-  frontend_fqdn = module.webapp.frontend_hostname
-  backend_fqdn  = module.webapp.backend_hostname
+  subnet_id           = module.subnets["app_gateway"].subnet_id
+  frontend_fqdn       = module.webapp.frontend_hostname
+  backend_fqdn        = module.webapp.backend_hostname
 }

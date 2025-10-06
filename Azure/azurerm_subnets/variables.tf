@@ -15,3 +15,15 @@ variable "address_prefixes" {
   default     = []
 }
 
+variable "service_endpoints" {
+  description = "Service endpoints to associate with the subnet"
+  type        = list(string)
+  default     = []
+}
+
+variable "delegation" {
+  description = "Optional delegation configuration for the subnet"
+  type        = any
+  default     = null
+}
+
