@@ -1,11 +1,3 @@
-resource "azurerm_public_ip" "appgw_pip" {
-  name                = "${var.prefix}-appgw-pip"
-  location            = var.location
-  resource_group_name = var.resource_group_name
-  allocation_method   = "Static"
-  sku                 = "Standard"
-}
-
 resource "azurerm_application_gateway" "app_gateway" {
   name                = "${var.prefix}-app-gateway"
   location            = var.location
@@ -24,7 +16,7 @@ resource "azurerm_application_gateway" "app_gateway" {
 
   frontend_ip_configuration {
     name                 = "appGatewayFrontendIP"
-    public_ip_address_id = azurerm_public_ip.appgw_pip.id
+    public_ip_address_id = var.public_ip_id
   }
 
   frontend_port {
@@ -46,33 +38,33 @@ resource "azurerm_application_gateway" "app_gateway" {
 
   # 🟦 Frontend Backend Settings
   backend_http_settings {
-    name                           = "frontend-http-settings"
-    cookie_based_affinity          = "Disabled"
-    port                           = 443
-    protocol                       = "Https"
-    request_timeout                = 60
+    name                                = "frontend-http-settings"
+    cookie_based_affinity               = "Disabled"
+    port                                = 443
+    protocol                            = "Https"
+    request_timeout                     = 60
     pick_host_name_from_backend_address = true
   }
 
   # 🟧 Backend API Settings
   backend_http_settings {
-    name                           = "backend-http-settings"
-    cookie_based_affinity          = "Disabled"
-    port                           = 443
-    protocol                       = "Https"
-    request_timeout                = 60
+    name                                = "backend-http-settings"
+    cookie_based_affinity               = "Disabled"
+    port                                = 443
+    protocol                            = "Https"
+    request_timeout                     = 60
     pick_host_name_from_backend_address = true
-    probe_name                     = "backend-probe"
+    probe_name                          = "backend-probe"
   }
 
   # ✅ Custom Probe for Backend (api health)
   probe {
-    name                = "backend-probe"
-    protocol            = "Https"
-    path                = "/api/ingredients"
-    interval            = 30
-    timeout             = 30
-    unhealthy_threshold = 3
+    name                                      = "backend-probe"
+    protocol                                  = "Https"
+    path                                      = "/api/ingredients"
+    interval                                  = 30
+    timeout                                   = 30
+    unhealthy_threshold                       = 3
     pick_host_name_from_backend_http_settings = true
   }
 

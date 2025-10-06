@@ -27,3 +27,8 @@ variable "backend_fqdn" {
   type        = string
   description = "Backend Web App FQDN"
 }
+
+variable "public_ip_id" {
+  type        = string
+  description = "Public IP resource ID used by the Application Gateway"
+}
