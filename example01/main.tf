@@ -56,10 +56,8 @@ module "webapp" {
 
   sql_admin_password = var.sql_admin_password
 
-  frontend_subnet_id    = module.subnets["frontend"].subnet_id
-  backend_subnet_id     = module.subnets["backend"].subnet_id
-  frontend_allowed_cidr = "${azurerm_public_ip.app_gateway.ip_address}/32"
-  backend_allowed_cidr  = "${azurerm_public_ip.app_gateway.ip_address}/32"
+  frontend_subnet_id = module.subnets["frontend"].subnet_id
+  backend_subnet_id  = module.subnets["backend"].subnet_id
 }
 
 

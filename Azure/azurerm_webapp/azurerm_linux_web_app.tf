@@ -29,18 +29,6 @@ resource "azurerm_linux_web_app" "frontend_app" {
     health_check_path                 = "/"
     health_check_eviction_time_in_min = 5
 
-    ip_restriction_default_action = var.frontend_allowed_cidr == null ? "Allow" : "Deny"
-
-    dynamic "ip_restriction" {
-      for_each = var.frontend_allowed_cidr == null ? [] : [var.frontend_allowed_cidr]
-
-      content {
-        name       = "allow-appgateway"
-        priority   = 100
-        action     = "Allow"
-        ip_address = ip_restriction.value
-      }
-    }
   }
 }
 
@@ -74,18 +62,6 @@ resource "azurerm_linux_web_app" "backend_app" {
     health_check_path                 = "/api/health"
     health_check_eviction_time_in_min = 5
 
-    ip_restriction_default_action = var.backend_allowed_cidr == null ? "Allow" : "Deny"
-
-    dynamic "ip_restriction" {
-      for_each = var.backend_allowed_cidr == null ? [] : [var.backend_allowed_cidr]
-
-      content {
-        name       = "allow-appgateway"
-        priority   = 100
-        action     = "Allow"
-        ip_address = ip_restriction.value
-      }
-    }
   }
 
   app_settings = {
