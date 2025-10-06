@@ -70,8 +70,8 @@ locals {
       }
     }
 
-    app_gateway = {
-      name          = "appgw-subnet"
+    appgw_subnet = {
+      name          = "appgw_subnet"
       address_space = ["10.0.1.0/24"]
     }
 

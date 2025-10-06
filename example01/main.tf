@@ -73,7 +73,7 @@ module "app_gateway" {
   prefix              = "project2"
   location            = local.location
   resource_group_name = module.resource_group.resource_group.name
-  subnet_id           = module.subnets["app_gateway"].subnet_id
+  subnet_id           = module.subnets["appgw_subnet"].subnet_id
   frontend_fqdn       = module.webapp.frontend_hostname
   backend_fqdn        = module.webapp.backend_hostname
 }
