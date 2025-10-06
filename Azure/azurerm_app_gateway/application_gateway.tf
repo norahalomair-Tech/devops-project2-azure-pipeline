@@ -1,3 +1,11 @@
+resource "azurerm_public_ip" "appgw_pip" {
+  name                = "${var.prefix}-appgw-pip"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  allocation_method   = "Static"
+  sku                 = "Standard"
+}
+
 resource "azurerm_application_gateway" "app_gateway" {
   name                = "${var.prefix}-app-gateway"
   location            = var.location
@@ -16,7 +24,7 @@ resource "azurerm_application_gateway" "app_gateway" {
 
   frontend_ip_configuration {
     name                 = "appGatewayFrontendIP"
-    public_ip_address_id = var.public_ip_id
+    public_ip_address_id = azurerm_public_ip.appgw_pip.id
   }
 
   frontend_port {

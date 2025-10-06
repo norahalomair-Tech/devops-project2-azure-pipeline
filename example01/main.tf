@@ -5,14 +5,6 @@ module "resource_group" {
   tags     = local.tags
 }
 
-resource "azurerm_public_ip" "app_gateway" {
-  name                = "project2-appgw-pip"
-  location            = local.location
-  resource_group_name = module.resource_group.name
-  allocation_method   = "Static"
-  sku                 = "Standard"
-}
-
 module "vnet" {
   source              = "../Azure/azurerm_virtual_network"
   name                = local.vnet_name
@@ -87,5 +79,4 @@ module "app_gateway" {
   subnet_id           = module.subnets["appgw_subnet"].subnet_id
   frontend_fqdn       = module.webapp.frontend_hostname
   backend_fqdn        = module.webapp.backend_hostname
-  public_ip_id        = azurerm_public_ip.app_gateway.id
 }
