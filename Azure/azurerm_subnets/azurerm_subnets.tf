@@ -19,3 +19,9 @@ resource "azurerm_subnet" "subnet" {
   }
 }
 
+resource "azurerm_subnet_network_security_group_association" "this" {
+  count = var.associate_network_security_group ? 1 : 0
+
+  subnet_id                 = azurerm_subnet.subnet.id
+  network_security_group_id = var.network_security_group_id
+}

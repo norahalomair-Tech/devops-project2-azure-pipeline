@@ -27,3 +27,15 @@ variable "delegation" {
   default     = null
 }
 
+variable "network_security_group_id" {
+  description = "Optional Network Security Group ID to associate with the subnet"
+  type        = string
+  default     = null
+}
+
+variable "associate_network_security_group" {
+  description = "Flag indicating whether to associate an NSG with the subnet"
+  type        = bool
+  default     = false
+}
+

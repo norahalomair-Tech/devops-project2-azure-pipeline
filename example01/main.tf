@@ -14,15 +14,27 @@ module "vnet" {
   tags                = local.tags
 }
 
+module "nsgs" {
+  source   = "../Azure/azurerm_network_security_group"
+  for_each = local.nsgs
+
+  name                = each.value.name
+  resource_group_name = module.resource_group.name
+  location            = local.location
+  security_rules      = each.value.security_rules
+}
+
 module "subnets" {
-  source              = "../Azure/azurerm_subnets"
-  for_each            = local.subnet
-  name                = try(each.value.name, each.key)
-  resource_group_name = module.resource_group.resource_group.name
-  vnet_name           = module.vnet.virtual_network.name
-  address_prefixes    = each.value.address_space
-  service_endpoints   = try(each.value.service_endpoints, [])
-  delegation          = try(each.value.delegation, null)
+  source                           = "../Azure/azurerm_subnets"
+  for_each                         = local.subnet
+  name                             = try(each.value.name, each.key)
+  resource_group_name              = module.resource_group.resource_group.name
+  vnet_name                        = module.vnet.virtual_network.name
+  address_prefixes                 = each.value.address_space
+  service_endpoints                = try(each.value.service_endpoints, [])
+  delegation                       = try(each.value.delegation, null)
+  associate_network_security_group = contains(keys(local.nsgs), each.key)
+  network_security_group_id        = contains(keys(local.nsgs), each.key) ? module.nsgs[each.key].id : null
 }
 
 

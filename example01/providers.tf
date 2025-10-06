@@ -81,4 +81,63 @@ locals {
       service_endpoints = ["Microsoft.Sql"]
     }
   }
+
+  nsgs = {
+    frontend = {
+      name           = "project2-frontend-nsg"
+      security_rules = []
+    }
+
+    backend = {
+      name           = "project2-backend-nsg"
+      security_rules = []
+    }
+
+    appgw_subnet = {
+      name = "project2-appgw-nsg"
+      security_rules = [
+        {
+          name                       = "AllowHttpInbound"
+          priority                   = 100
+          direction                  = "Inbound"
+          access                     = "Allow"
+          protocol                   = "Tcp"
+          source_port_range          = "*"
+          destination_port_range     = "80"
+          source_address_prefix      = "Internet"
+          destination_address_prefix = "*"
+          description                = "Allow HTTP traffic from the Internet to the Application Gateway."
+        },
+        {
+          name                       = "AllowGatewayManager"
+          priority                   = 110
+          direction                  = "Inbound"
+          access                     = "Allow"
+          protocol                   = "Tcp"
+          source_port_range          = "*"
+          destination_port_range     = "65200-65535"
+          source_address_prefix      = "GatewayManager"
+          destination_address_prefix = "*"
+          description                = "Permit GatewayManager service tag for control plane operations."
+        },
+        {
+          name                       = "AllowAzureLoadBalancer"
+          priority                   = 120
+          direction                  = "Inbound"
+          access                     = "Allow"
+          protocol                   = "Tcp"
+          source_port_range          = "*"
+          destination_port_range     = "*"
+          source_address_prefix      = "AzureLoadBalancer"
+          destination_address_prefix = "*"
+          description                = "Allow Azure Load Balancer probe traffic."
+        }
+      ]
+    }
+
+    sql = {
+      name           = "project2-sql-nsg"
+      security_rules = []
+    }
+  }
 }
