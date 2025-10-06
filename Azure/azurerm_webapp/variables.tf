@@ -89,3 +89,15 @@ variable "backend_subnet_id" {
   type        = string
   default     = null
 }
+
+variable "frontend_allowed_subnet_id" {
+  description = "Subnet allowed to reach the frontend web app"
+  type        = string
+  default     = null
+}
+
+variable "backend_allowed_subnet_id" {
+  description = "Subnet allowed to reach the backend web app"
+  type        = string
+  default     = null
+}
