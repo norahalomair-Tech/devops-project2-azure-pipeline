@@ -101,3 +101,15 @@ variable "backend_allowed_subnet_id" {
   type        = string
   default     = null
 }
+
+variable "frontend_allowed_ip_address" {
+  description = "IP address allowed to access the frontend web app"
+  type        = string
+  default     = null
+}
+
+variable "backend_allowed_ip_address" {
+  description = "IP address allowed to access the backend web app"
+  type        = string
+  default     = null
+}

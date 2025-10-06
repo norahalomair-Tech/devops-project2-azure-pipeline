@@ -1,6 +1,40 @@
-
 # 🟦 Frontend Service Plan + Web App
 
+locals {
+  frontend_ip_restrictions = [
+    for rule in [
+      var.frontend_allowed_subnet_id == null ? null : {
+        name                      = "gw-subnet"
+        priority                  = 300
+        action                    = "Allow"
+        virtual_network_subnet_id = var.frontend_allowed_subnet_id
+      },
+      var.frontend_allowed_ip_address == null ? null : {
+        name       = "gw-ip"
+        priority   = 310
+        action     = "Allow"
+        ip_address = var.frontend_allowed_ip_address
+      }
+    ] : rule if rule != null
+  ]
+
+  backend_ip_restrictions = [
+    for rule in [
+      var.backend_allowed_subnet_id == null ? null : {
+        name                      = "gw-subnet"
+        priority                  = 300
+        action                    = "Allow"
+        virtual_network_subnet_id = var.backend_allowed_subnet_id
+      },
+      var.backend_allowed_ip_address == null ? null : {
+        name       = "gw-ip"
+        priority   = 310
+        action     = "Allow"
+        ip_address = var.backend_allowed_ip_address
+      }
+    ] : rule if rule != null
+  ]
+}
 
 resource "azurerm_service_plan" "frontend_plan" {
   name                = var.service_plan_name_fe
@@ -30,17 +64,18 @@ resource "azurerm_linux_web_app" "frontend_app" {
     health_check_eviction_time_in_min = 5
 
     dynamic "ip_restriction" {
-      for_each = var.frontend_allowed_subnet_id == null ? [] : [var.frontend_allowed_subnet_id]
+      for_each = local.frontend_ip_restrictions
 
       content {
-        name                      = "gw"
-        priority                  = 300
-        action                    = "Allow"
-        virtual_network_subnet_id = ip_restriction.value
+        name                      = ip_restriction.value.name
+        priority                  = ip_restriction.value.priority
+        action                    = ip_restriction.value.action
+        virtual_network_subnet_id = try(ip_restriction.value.virtual_network_subnet_id, null)
+        ip_address                = try(ip_restriction.value.ip_address, null)
       }
     }
 
-    ip_restriction_default_action = var.frontend_allowed_subnet_id == null ? "Allow" : "Deny"
+    ip_restriction_default_action = length(local.frontend_ip_restrictions) == 0 ? "Allow" : "Deny"
 
   }
 }
@@ -76,17 +111,18 @@ resource "azurerm_linux_web_app" "backend_app" {
     health_check_eviction_time_in_min = 5
 
     dynamic "ip_restriction" {
-      for_each = var.backend_allowed_subnet_id == null ? [] : [var.backend_allowed_subnet_id]
+      for_each = local.backend_ip_restrictions
 
       content {
-        name                      = "gw"
-        priority                  = 300
-        action                    = "Allow"
-        virtual_network_subnet_id = ip_restriction.value
+        name                      = ip_restriction.value.name
+        priority                  = ip_restriction.value.priority
+        action                    = ip_restriction.value.action
+        virtual_network_subnet_id = try(ip_restriction.value.virtual_network_subnet_id, null)
+        ip_address                = try(ip_restriction.value.ip_address, null)
       }
     }
 
-    ip_restriction_default_action = var.backend_allowed_subnet_id == null ? "Allow" : "Deny"
+    ip_restriction_default_action = length(local.backend_ip_restrictions) == 0 ? "Allow" : "Deny"
 
   }
 
