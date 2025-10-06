@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: example01
-        
+        working-directory: TFmain
+
     env:
       TF_VAR_sql_admin_password: ${{ secrets.SQL_ADMIN_PASSWORD }}
     

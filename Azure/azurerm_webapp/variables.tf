@@ -15,60 +15,60 @@ variable "address_prefixes" {
 
 variable "fe_image_name" {
   type        = string
-  description = "اسم صورة الدوكر الخاصة بالواجهة الأمامية (Frontend Docker image name)"
+  description = "(Frontend Docker image name)"
 }
 
 variable "fe_tag" {
   type        = string
-  description = "إصدار صورة الدوكر للواجهة الأمامية (Frontend Docker image tag)"
+  description = " (Frontend Docker image tag)"
   default     = "latest"
 }
 variable "fe_app_name" {
   type        = string
-  description = "اسم تطبيق الواجهة الأمامية في Azure"
+  description = " Azure"
 }
 
 variable "service_plan_name_fe" {
   type        = string
-  description = "اسم خطة الخدمة (App Service Plan) للواجهة الأمامية"
+  description = " (App Service Plan) "
 }
 
 variable "fe_sku" {
   type        = string
-  description = "نوع خطة الخدمة (SKU) مثل P1v2 أو S1"
+  description = " (SKU)  P1v2  S1"
   default     = "P1v2"
 }
 
 variable "public_access" {
   type        = bool
-  description = "تمكين أو تعطيل الوصول العام للتطبيق"
+  description = " access"
   default     = true
 }
 
 variable "be_app_name" {
   type        = string
-  description = "اسم تطبيق الـ Backend في Azure"
+  description = " Backend  Azure"
 }
 
 variable "service_plan_name_be" {
   type        = string
-  description = "اسم خطة الخدمة للـ Backend"
+  description = "plan Backend"
 }
 
 variable "be_sku" {
   type        = string
-  description = "SKU لخطة الخدمة للـ Backend"
+  description = "SKU  Backend"
   default     = "P1v2"
 }
 
 variable "be_image_name" {
   type        = string
-  description = "اسم صورة Docker الخاصة بالـ Backend"
+  description = "image Docker  Backend"
 }
 
 variable "be_tag" {
   type        = string
-  description = "Tag لصورة Docker الخاصة بالـ Backend"
+  description = "Tag  Docker Backend"
   default     = "latest"
 }
 

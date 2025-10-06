@@ -54,7 +54,7 @@ resource "azurerm_application_gateway" "app_gateway" {
     pick_host_name_from_backend_address = true
   }
 
-  # 🟧 Backend API Settings
+  #  Backend API Settings
   backend_http_settings {
     name                                = "backend-http-settings"
     cookie_based_affinity               = "Disabled"

@@ -1,4 +1,4 @@
-# 🟦 Frontend Service Plan + Web App
+#  Frontend Service Plan + Web App
 
 locals {
   frontend_ip_restrictions = [
@@ -81,7 +81,7 @@ resource "azurerm_linux_web_app" "frontend_app" {
 }
 
 
-# 🟧 Backend Service Plan + Web App
+#  Backend Service Plan + Web App
 
 resource "azurerm_service_plan" "backend_plan" {
   name                = var.service_plan_name_be
