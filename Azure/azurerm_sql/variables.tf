@@ -33,3 +33,21 @@ variable "tags" {
   type    = map(string)
   default = {}
 }
+
+variable "private_endpoint_subnet_id" {
+  type        = string
+  description = "Subnet ID where the SQL private endpoint will be created"
+  default     = null
+}
+
+variable "virtual_network_id" {
+  type        = string
+  description = "Virtual network ID used for DNS zone linkage"
+  default     = null
+}
+
+variable "private_dns_zone_name" {
+  type        = string
+  description = "Private DNS zone name for SQL private endpoint"
+  default     = "privatelink.database.windows.net"
+}

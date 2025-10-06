@@ -65,6 +65,9 @@ module "sql" {
   sql_admin_password = var.sql_admin_password
 
   tags = local.tags
+
+  private_endpoint_subnet_id = module.subnets["sql"].subnet_id
+  virtual_network_id         = module.vnet.virtual_network.id
 }
 
 module "app_gateway" {
