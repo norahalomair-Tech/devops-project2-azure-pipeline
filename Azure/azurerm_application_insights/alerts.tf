@@ -69,6 +69,8 @@ resource "azurerm_monitor_metric_alert" "fe_alert" {
     operator         = "LessThan"
     threshold        = var.availability_threshold
 
+    skip_metric_validation = true
+
     dimension {
       name     = "TestName"
       operator = "Include"
@@ -101,6 +103,8 @@ resource "azurerm_monitor_metric_alert" "be_alert" {
     aggregation      = "Average"
     operator         = "LessThan"
     threshold        = var.availability_threshold
+
+    skip_metric_validation = true
 
     dimension {
       name     = "TestName"
