@@ -44,7 +44,7 @@ resource "azurerm_application_gateway" "app_gateway" {
     fqdns = [var.backend_fqdn]
   }
 
-  # 🟦 Frontend Backend Settings
+  #  Frontend Backend Settings
   backend_http_settings {
     name                                = "frontend-http-settings"
     cookie_based_affinity               = "Disabled"
@@ -65,7 +65,7 @@ resource "azurerm_application_gateway" "app_gateway" {
     probe_name                          = "backend-probe"
   }
 
-  # ✅ Custom Probe for Backend (api health)
+  #  Custom Probe for Backend (api health)
   probe {
     name                                      = "backend-probe"
     protocol                                  = "Https"
