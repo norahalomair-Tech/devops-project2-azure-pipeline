@@ -56,26 +56,18 @@ resource "azurerm_monitor_metric_alert" "fe_alert" {
   count               = var.frontend_url == null ? 0 : 1
   name                = "fe-availability-alert"
   resource_group_name = var.resource_group_name
-  scopes              = [azurerm_application_insights.this.id]
+  scopes              = [azurerm_application_insights_standard_web_test.fe_web_test[0].id]
   description         = "Frontend availability below threshold"
   severity            = 2
   frequency           = "PT5M"
   window_size         = "PT5M"
 
   criteria {
-    metric_namespace = "microsoft.insights/components"
-    metric_name      = "availabilityResults/availabilityPercentage"
+    metric_namespace = "microsoft.insights/webtests"
+    metric_name      = "Availability"
     aggregation      = "Average"
     operator         = "LessThan"
     threshold        = var.availability_threshold
-
-    skip_metric_validation = true
-
-    dimension {
-      name     = "TestName"
-      operator = "Include"
-      values   = [azurerm_application_insights_standard_web_test.fe_web_test[0].name]
-    }
   }
 
   dynamic "action" {
@@ -91,26 +83,18 @@ resource "azurerm_monitor_metric_alert" "be_alert" {
   count               = var.backend_url == null ? 0 : 1
   name                = "be-availability-alert"
   resource_group_name = var.resource_group_name
-  scopes              = [azurerm_application_insights.this.id]
+  scopes              = [azurerm_application_insights_standard_web_test.be_web_test[0].id]
   description         = "Backend availability below threshold"
   severity            = 2
   frequency           = "PT5M"
   window_size         = "PT5M"
 
   criteria {
-    metric_namespace = "microsoft.insights/components"
-    metric_name      = "availabilityResults/availabilityPercentage"
+    metric_namespace = "microsoft.insights/webtests"
+    metric_name      = "Availability"
     aggregation      = "Average"
     operator         = "LessThan"
     threshold        = var.availability_threshold
-
-    skip_metric_validation = true
-
-    dimension {
-      name     = "TestName"
-      operator = "Include"
-      values   = [azurerm_application_insights_standard_web_test.be_web_test[0].name]
-    }
   }
 
   dynamic "action" {
