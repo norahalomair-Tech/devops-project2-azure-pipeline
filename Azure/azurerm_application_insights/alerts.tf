@@ -75,7 +75,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "fe_availability_alert
     query                   = <<-KQL
 availabilityResults
 | where name == "${azurerm_application_insights_standard_web_test.fe_web_test[0].name}"
-| extend success_score = iff(success, 1.0, 0.0)
+| extend success_score = iif(tolower(tostring(success)) == "true", 1.0, 0.0)
 | summarize availability = 100.0 * avg(success_score), samples = count() by bin(timestamp, 5m)
 | where samples > 0 and availability < ${var.availability_threshold}
 KQL
@@ -105,7 +105,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "be_availability_alert
     query                   = <<-KQL
 availabilityResults
 | where name == "${azurerm_application_insights_standard_web_test.be_web_test[0].name}"
-| extend success_score = iff(success, 1.0, 0.0)
+| extend success_score = iif(tolower(tostring(success)) == "true", 1.0, 0.0)
 | summarize availability = 100.0 * avg(success_score), samples = count() by bin(timestamp, 5m)
 | where samples > 0 and availability < ${var.availability_threshold}
 KQL
