@@ -38,6 +38,16 @@ module "subnets" {
 }
 
 
+module "app_insights" {
+  source = "../Azure/azurerm_application_insights"
+
+  name                = "project2-ai-aalhatlan"
+  location            = local.location
+  resource_group_name = module.resource_group.resource_group.name
+  tags                = local.tags
+}
+
+
 module "webapp" {
   source              = "../Azure/azurerm_webapp"
   resource_group_name = module.resource_group.name
@@ -59,6 +69,9 @@ module "webapp" {
   be_sku               = "P1v2"
 
   sql_admin_password = var.sql_admin_password
+
+  application_insights_connection_string   = module.app_insights.connection_string
+  application_insights_instrumentation_key = module.app_insights.instrumentation_key
 
   frontend_subnet_id = module.subnets["frontend"].subnet_id
   backend_subnet_id  = module.subnets["backend"].subnet_id

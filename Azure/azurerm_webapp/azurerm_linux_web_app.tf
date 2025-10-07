@@ -34,6 +34,18 @@ locals {
       }
     ] : rule if rule != null
   ]
+
+  frontend_app_settings = var.application_insights_connection_string == null ? {} : {
+    APPLICATIONINSIGHTS_CONNECTION_STRING = var.application_insights_connection_string
+    APPINSIGHTS_INSTRUMENTATIONKEY        = var.application_insights_instrumentation_key
+    APPLICATIONINSIGHTS_ROLE_NAME         = var.frontend_app_insights_role_name
+  }
+
+  backend_app_settings = var.application_insights_connection_string == null ? {} : {
+    APPLICATIONINSIGHTS_CONNECTION_STRING = var.application_insights_connection_string
+    APPINSIGHTS_INSTRUMENTATIONKEY        = var.application_insights_instrumentation_key
+    APPLICATIONINSIGHTS_ROLE_NAME         = var.backend_app_insights_role_name
+  }
 }
 
 resource "azurerm_service_plan" "frontend_plan" {
@@ -51,6 +63,8 @@ resource "azurerm_linux_web_app" "frontend_app" {
   service_plan_id               = azurerm_service_plan.frontend_plan.id
   virtual_network_subnet_id     = var.frontend_subnet_id
   public_network_access_enabled = var.public_access
+
+  app_settings = local.frontend_app_settings
 
   site_config {
     always_on = true
@@ -126,7 +140,7 @@ resource "azurerm_linux_web_app" "backend_app" {
 
   }
 
-  app_settings = {
+  app_settings = merge({
     "SPRING_PROFILES_ACTIVE" = "azure"
     "DB_HOST"                = "project2-sqlserver-aalhatlan.database.windows.net"
     "DB_PORT"                = "1433"
@@ -134,6 +148,6 @@ resource "azurerm_linux_web_app" "backend_app" {
     "DB_USERNAME"            = "ahmad"
     "DB_PASSWORD"            = var.sql_admin_password
     "DB_DRIVER"              = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
-  }
+  }, local.backend_app_settings)
 
 }

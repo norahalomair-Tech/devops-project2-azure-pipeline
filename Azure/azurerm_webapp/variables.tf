@@ -113,3 +113,27 @@ variable "backend_allowed_ip_address" {
   type        = string
   default     = null
 }
+
+variable "application_insights_connection_string" {
+  description = "Application Insights connection string used by both frontend and backend"
+  type        = string
+  default     = null
+}
+
+variable "application_insights_instrumentation_key" {
+  description = "Application Insights instrumentation key (legacy)"
+  type        = string
+  default     = null
+}
+
+variable "frontend_app_insights_role_name" {
+  description = "Application Insights role name for the frontend app"
+  type        = string
+  default     = "frontend"
+}
+
+variable "backend_app_insights_role_name" {
+  description = "Application Insights role name for the backend app"
+  type        = string
+  default     = "backend"
+}
