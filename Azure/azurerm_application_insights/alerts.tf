@@ -48,61 +48,65 @@ resource "azurerm_application_insights_standard_web_test" "be_web_test" {
   }
 }
 
-#################
-# Metric Alerts #
-#################
+##########################
+# Availability KQL Alerts #
+##########################
 
-resource "azurerm_monitor_metric_alert" "fe_alert" {
-  count               = var.frontend_url == null ? 0 : 1
-  name                = "fe-availability-alert"
-  resource_group_name = var.resource_group_name
-  scopes              = [azurerm_application_insights_standard_web_test.fe_web_test[0].id]
-  description         = "Frontend availability below threshold"
-  severity            = 2
-  frequency           = "PT5M"
-  window_size         = "PT5M"
+resource "azurerm_monitor_scheduled_query_rules_alert_v2" "fe_availability_alert" {
+  count                = var.frontend_url == null ? 0 : 1
+  name                 = "fe-availability-alert"
+  location             = var.location
+  resource_group_name  = var.resource_group_name
+  scopes               = [azurerm_application_insights.this.id]
+  description          = "Frontend availability below threshold"
+  severity             = 2
+  enabled              = true
+  evaluation_frequency = "PT5M"
+  window_duration      = "PT10M"
 
-  criteria {
-    metric_namespace = "microsoft.insights/webtests"
-    metric_name      = "Availability"
-    aggregation      = "Average"
-    operator         = "LessThan"
-    threshold        = var.availability_threshold
+  action {
+    action_groups = var.action_group_id == null ? [] : [var.action_group_id]
   }
 
-  dynamic "action" {
-    for_each = var.action_group_id == null ? [] : [var.action_group_id]
-
-    content {
-      action_group_id = action.value
-    }
+  criteria {
+    operator                = "GreaterThan"
+    threshold               = 0
+    time_aggregation_method = "Count"
+    query                   = <<-KQL
+availabilityResults
+| where name == "${azurerm_application_insights_standard_web_test.fe_web_test[0].name}"
+| summarize availability = 100.0 * avg(toint(success)) by bin(timestamp, 5m)
+| where availability < ${var.availability_threshold}
+KQL
   }
 }
 
-resource "azurerm_monitor_metric_alert" "be_alert" {
-  count               = var.backend_url == null ? 0 : 1
-  name                = "be-availability-alert"
-  resource_group_name = var.resource_group_name
-  scopes              = [azurerm_application_insights_standard_web_test.be_web_test[0].id]
-  description         = "Backend availability below threshold"
-  severity            = 2
-  frequency           = "PT5M"
-  window_size         = "PT5M"
+resource "azurerm_monitor_scheduled_query_rules_alert_v2" "be_availability_alert" {
+  count                = var.backend_url == null ? 0 : 1
+  name                 = "be-availability-alert"
+  location             = var.location
+  resource_group_name  = var.resource_group_name
+  scopes               = [azurerm_application_insights.this.id]
+  description          = "Backend availability below threshold"
+  severity             = 2
+  enabled              = true
+  evaluation_frequency = "PT5M"
+  window_duration      = "PT10M"
 
-  criteria {
-    metric_namespace = "microsoft.insights/webtests"
-    metric_name      = "Availability"
-    aggregation      = "Average"
-    operator         = "LessThan"
-    threshold        = var.availability_threshold
+  action {
+    action_groups = var.action_group_id == null ? [] : [var.action_group_id]
   }
 
-  dynamic "action" {
-    for_each = var.action_group_id == null ? [] : [var.action_group_id]
-
-    content {
-      action_group_id = action.value
-    }
+  criteria {
+    operator                = "GreaterThan"
+    threshold               = 0
+    time_aggregation_method = "Count"
+    query                   = <<-KQL
+availabilityResults
+| where name == "${azurerm_application_insights_standard_web_test.be_web_test[0].name}"
+| summarize availability = 100.0 * avg(toint(success)) by bin(timestamp, 5m)
+| where availability < ${var.availability_threshold}
+KQL
   }
 }
 
