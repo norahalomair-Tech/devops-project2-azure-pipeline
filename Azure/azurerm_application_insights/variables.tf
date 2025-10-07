@@ -19,12 +19,6 @@ variable "tags" {
   default     = {}
 }
 
-variable "workspace_id" {
-  type        = string
-  description = "Log Analytics workspace resource ID for workspace-based Application Insights"
-  default     = null
-}
-
 variable "frontend_url" {
   type        = string
   description = "Public URL for frontend availability test (via App Gateway)"
