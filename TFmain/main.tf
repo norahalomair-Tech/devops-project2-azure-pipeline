@@ -45,6 +45,7 @@ module "app_insights" {
   location            = local.location
   resource_group_name = module.resource_group.resource_group.name
   tags                = local.tags
+  workspace_id        = var.app_insights_workspace_id
 
   # Optional: wire App Gateway-based availability tests and alert routing
   frontend_url   = var.frontend_url

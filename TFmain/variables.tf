@@ -16,3 +16,8 @@ variable "action_group_id" {
   default     = null
 }
 
+variable "app_insights_workspace_id" {
+  type        = string
+  description = "Log Analytics workspace resource ID for Application Insights"
+  default     = null
+}

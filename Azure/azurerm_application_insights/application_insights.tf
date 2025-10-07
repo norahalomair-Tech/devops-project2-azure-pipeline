@@ -4,5 +4,5 @@ resource "azurerm_application_insights" "this" {
   resource_group_name = var.resource_group_name
   application_type    = "web"
   tags                = var.tags
+  workspace_id        = var.workspace_id
 }
-
