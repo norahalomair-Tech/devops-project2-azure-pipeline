@@ -45,11 +45,6 @@ module "app_insights" {
   location            = local.location
   resource_group_name = module.resource_group.resource_group.name
   tags                = local.tags
-
-  # Optional: wire App Gateway-based availability tests and alert routing
-  frontend_url   = var.frontend_url
-  backend_url    = var.backend_url
-  action_group_id = var.action_group_id
 }
 
 
