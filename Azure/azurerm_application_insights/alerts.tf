@@ -53,7 +53,7 @@ resource "azurerm_application_insights_standard_web_test" "be_web_test" {
 #################
 
 resource "azurerm_monitor_metric_alert" "fe_alert" {
-  count               = var.frontend_url == null || var.action_group_id == null ? 0 : 1
+  count               = var.frontend_url == null ? 0 : 1
   name                = "fe-availability-alert"
   resource_group_name = var.resource_group_name
   scopes              = [azurerm_application_insights.this.id]
@@ -76,13 +76,17 @@ resource "azurerm_monitor_metric_alert" "fe_alert" {
     }
   }
 
-  action {
-    action_group_id = var.action_group_id
+  dynamic "action" {
+    for_each = var.action_group_id == null ? [] : [var.action_group_id]
+
+    content {
+      action_group_id = action.value
+    }
   }
 }
 
 resource "azurerm_monitor_metric_alert" "be_alert" {
-  count               = var.backend_url == null || var.action_group_id == null ? 0 : 1
+  count               = var.backend_url == null ? 0 : 1
   name                = "be-availability-alert"
   resource_group_name = var.resource_group_name
   scopes              = [azurerm_application_insights.this.id]
@@ -105,8 +109,12 @@ resource "azurerm_monitor_metric_alert" "be_alert" {
     }
   }
 
-  action {
-    action_group_id = var.action_group_id
+  dynamic "action" {
+    for_each = var.action_group_id == null ? [] : [var.action_group_id]
+
+    content {
+      action_group_id = action.value
+    }
   }
 }
 
@@ -115,7 +123,7 @@ resource "azurerm_monitor_metric_alert" "be_alert" {
 #########################
 
 resource "azurerm_monitor_scheduled_query_rules_alert_v2" "sql_failure_alert" {
-  count                = var.action_group_id == null ? 0 : 1
+  count                = 1
   name                 = "sql-failure-rate-alert"
   location             = var.location
   resource_group_name  = var.resource_group_name
@@ -127,7 +135,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "sql_failure_alert" {
   window_duration      = "PT10M"
 
   action {
-    action_groups = [var.action_group_id]
+    action_groups = var.action_group_id == null ? [] : [var.action_group_id]
   }
 
   criteria {

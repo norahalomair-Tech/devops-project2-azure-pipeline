@@ -1,13 +1,13 @@
 variable "frontend_url" {
   type        = string
-  description = "Public URL for frontend availability test (via App Gateway)"
-  default     = null
+  description = "Public URL for frontend availability test"
+  default     = "https://fe-project2-aalhatlan.azurewebsites.net/"
 }
 
 variable "backend_url" {
   type        = string
-  description = "Public URL for backend availability test (via App Gateway)"
-  default     = null
+  description = "Public URL for backend availability test"
+  default     = "https://be-project2-aalhatlan.azurewebsites.net/api/health"
 }
 
 variable "action_group_id" {
