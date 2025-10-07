@@ -12,7 +12,7 @@ resource "azurerm_application_insights_standard_web_test" "fe_web_test" {
   enabled        = true
   frequency      = 300   # 5 minutes
   timeout        = 60    # 60 seconds
-  geo_locations  = ["emea-nl-ams-azr", "emea-fr-pra-azr"]
+  geo_locations  = ["emea-nl-ams-azr", "emea-uk-lon-azr"]
 
   request {
     url       = var.frontend_url
@@ -35,7 +35,7 @@ resource "azurerm_application_insights_standard_web_test" "be_web_test" {
   enabled        = true
   frequency      = 300   # 5 minutes
   timeout        = 60    # 60 seconds
-  geo_locations  = ["emea-nl-ams-azr", "emea-fr-pra-azr"]
+  geo_locations  = ["emea-nl-ams-azr", "emea-uk-lon-azr"]
 
   request {
     url       = var.backend_url
