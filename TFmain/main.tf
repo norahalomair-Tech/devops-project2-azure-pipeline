@@ -97,6 +97,7 @@ module "sql" {
 
   tags = local.tags
 
+  enable_private_endpoint   = true
   private_endpoint_subnet_id = module.subnets["sql"].subnet_id
   virtual_network_id         = module.vnet.virtual_network.id
 }

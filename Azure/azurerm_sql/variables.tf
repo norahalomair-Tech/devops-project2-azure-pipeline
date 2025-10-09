@@ -51,3 +51,9 @@ variable "private_dns_zone_name" {
   description = "Private DNS zone name for SQL private endpoint"
   default     = "privatelink.database.windows.net"
 }
+
+variable "enable_private_endpoint" {
+  type        = bool
+  description = "Whether to create a private endpoint and related DNS resources for the SQL Server"
+  default     = false
+}

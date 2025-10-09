@@ -1,5 +1,5 @@
 locals {
-  sql_private_endpoint_enabled = var.private_endpoint_subnet_id != null && var.virtual_network_id != null
+  sql_private_endpoint_enabled = var.enable_private_endpoint
 }
 
 resource "azurerm_mssql_server" "sql_server" {
