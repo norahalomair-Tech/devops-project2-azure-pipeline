@@ -10,12 +10,13 @@ The solution provisions a complete **frontend–backend–database** stack insid
 Automation ensures that every resource is created, configured, and deployed consistently with full CI/CD integration.
 
 <p align="center">
-  <img src="e8369f21-bf04-459b-bf54-8a455c79c562.png" width="850" alt="Azure Architecture Diagram">
+  <img width="972" height="542" alt="image" src="https://github.com/user-attachments/assets/65aac071-1171-44fa-ac10-d5298f3c3845" />
+>
 </p>
 
 ---
 
-## ☁️ Infrastructure Components
+## Infrastructure Components
 
 | Layer | Description |
 |-------|--------------|
@@ -56,7 +57,7 @@ Before deploying, ensure you have:
   - `DOCKERHUB_USERNAME` / `DOCKERHUB_TOKEN`
   - `SQL_ADMIN_PASSWORD`
 
----
+
 
 ##  Infrastructure as Code (Terraform)
 
@@ -67,8 +68,8 @@ You can deploy locally or automatically via the GitHub Actions workflow
 cd TFmain
 terraform init
 terraform plan
-terraform apply -auto-approve
------
+terraform apply -auto-approve```
+---
 ## How to Validate the Deployment
 
 After the GitHub Actions workflows complete successfully:
@@ -81,24 +82,20 @@ From Terraform output (app_gateway_public_ip) or Azure Portal → Application Ga
 
 Open the frontend in your browser:
 
-http://<App-Gateway-IP>/
-
+``http://<App-Gateway-IP>/``
 
 Expected: The Burger Builder UI should load correctly.
 
 3. Test Backend API Health
 
-Use curl or a browser to check the backend health endpoint:
-
-curl http://<App-Gateway-IP>/api/health
-
+``http://<App-Gateway-IP>/api/health``
 
 Expected response:
 
-{
+``{
   "status": "UP"
-}
------
+}``
+----
 ## Application Logs and Monitoring
 In Azure Portal:
 
@@ -106,7 +103,7 @@ Application Gateway → Backend Health → Ensure all backends are healthy
 
 Application Insights → Logs → View live metrics, requests, and failures
 
-# Monitor → Alerts → Verify configured alerts:
+### Monitor → Alerts → Verify configured alerts:
 
 App Service CPU > 70%
 
@@ -125,5 +122,5 @@ Review probe path /api/health configuration
 -------
 When finished, destroy the environment to avoid Azure charges:
 
-cd TFmain
-terraform destroy -auto-approve
+cd TFmain``
+terraform destroy -auto-approve``
