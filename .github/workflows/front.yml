@@ -1,4 +1,4 @@
-name: " Build & Push Frontend (Vite)- Project 2"
+name: " Build & Push Frontend- Project2-by-norah"
 
 on:
   push:
@@ -34,7 +34,7 @@ jobs:
       - name:  Set Backend URL
         id: backend_url
         run: |
-          BACKEND_URL="http://40.115.16.12"
+          BACKEND_URL="http://20.61.51.4"
           echo "backend_url=$BACKEND_URL" >> $GITHUB_OUTPUT
 
       - name:  Build & Push Frontend (Vite)

@@ -7,21 +7,17 @@ terraform {
   }
 
   backend "azurerm" {
-    resource_group_name  = "tfstate-rg-project2"
-    storage_account_name = "tfstate14175"
-    container_name       = "tfstate"
-    key                  = "project2.terraform.tfstate"
+    resource_group_name  = "tfstate-rg-norah"
+    storage_account_name = "tfstatenorah505"
+    container_name       = "terraformstate"
+    key                  = "project2-norah.tfstate"
   }
 }
-
-
-
 
 provider "azurerm" {
   features {}
   subscription_id = "80646857-9142-494b-90c5-32fea6acbc41"
 }
-
 
 variable "sql_admin_password" {
   type        = string
@@ -29,21 +25,17 @@ variable "sql_admin_password" {
   sensitive   = true
 }
 
-
 locals {
-  resource_group_name = "project2-rg-aalhatlan"
-  vnet_name           = "project2-vnet-aalhatlan"
+  resource_group_name = "project2-rg-norah"
+  vnet_name           = "project2-vnet-norah"
   location            = "West Europe"
-
-
 
   tags = {
     bootcamp = "devops-week5"
+    owner    = "norah"
   }
 
   address_space = ["10.0.0.0/16"]
-
-
 
   subnet = {
     frontend = {
@@ -71,7 +63,7 @@ locals {
     }
 
     appgw_subnet = {
-      name          = "appgw_subnet"
+      name          = "appgw-subnet"
       address_space = ["10.0.1.0/24"]
     }
 
@@ -84,17 +76,17 @@ locals {
 
   nsgs = {
     frontend = {
-      name           = "project2-frontend-nsg"
+      name           = "project2-frontend-nsg-norah"
       security_rules = []
     }
 
     backend = {
-      name           = "project2-backend-nsg"
+      name           = "project2-backend-nsg-norah"
       security_rules = []
     }
 
     appgw_subnet = {
-      name = "project2-appgw-nsg"
+      name = "project2-appgw-nsg-norah"
       security_rules = [
         {
           name                       = "AllowHttpInbound"
@@ -136,7 +128,7 @@ locals {
     }
 
     sql = {
-      name           = "project2-sql-nsg"
+      name           = "project2-sql-nsg-norah"
       security_rules = []
     }
   }

@@ -37,16 +37,14 @@ module "subnets" {
   network_security_group_id        = contains(keys(local.nsgs), each.key) ? module.nsgs[each.key].id : null
 }
 
-
 module "app_insights" {
   source = "../Azure/azurerm_application_insights"
 
-  name                = "project2-ai-aalhatlan"
+  name                = "project2-norah-ai"
   location            = local.location
   resource_group_name = module.resource_group.resource_group.name
   tags                = local.tags
 }
-
 
 module "webapp" {
   source              = "../Azure/azurerm_webapp"
@@ -54,17 +52,17 @@ module "webapp" {
   location            = local.location
 
   # Frontend
-  service_plan_name_fe = "plan"
-  fe_app_name          = "fe-project2-aalhatlan"
-  fe_image_name        = "aalhatlan/project2-fe"
+  service_plan_name_fe = "frontend-plan-norah"
+  fe_app_name          = "burger-frontend-norah"
+  fe_image_name        = "norah505/burger-frontend"
   fe_tag               = "latest"
   fe_sku               = "P1v2"
   public_access        = true
 
   # Backend
-  service_plan_name_be = "backend-plan"
-  be_app_name          = "be-project2-aalhatlan"
-  be_image_name        = "aalhatlan/project2-be"
+  service_plan_name_be = "backend-plan-norah"
+  be_app_name          = "burger-backend-norah"
+  be_image_name        = "norah505/burger-backend"
   be_tag               = "latest"
   be_sku               = "P1v2"
 
@@ -83,21 +81,20 @@ module "webapp" {
   backend_allowed_ip_address  = format("%s/32", module.app_gateway.app_gateway_public_ip)
 }
 
-
 module "sql" {
   source = "../Azure/azurerm_sql"
 
   resource_group_name = module.resource_group.name
   location            = local.location
 
-  sql_server_name    = "project2-sqlserver-aalhatlan"
-  sql_database_name  = "project2db"
-  sql_admin_username = "ahmad"
+  sql_server_name    = "burger-sqlserver-norah"
+  sql_database_name  = "burgerdb"
+  sql_admin_username = "norah"
   sql_admin_password = var.sql_admin_password
 
   tags = local.tags
 
-  enable_private_endpoint   = true
+  enable_private_endpoint    = true
   private_endpoint_subnet_id = module.subnets["sql"].subnet_id
   virtual_network_id         = module.vnet.virtual_network.id
 }
@@ -105,7 +102,7 @@ module "sql" {
 module "app_gateway" {
   source = "../Azure/azurerm_app_gateway"
 
-  prefix              = "project2"
+  prefix              = "burger-norah"
   location            = local.location
   resource_group_name = module.resource_group.resource_group.name
   subnet_id           = module.subnets["appgw_subnet"].subnet_id

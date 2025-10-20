@@ -2,6 +2,7 @@
 .env
 .env.local
 .env.*.local
+environment.env  
 
 # IDE
 .vscode/
@@ -26,4 +27,6 @@ yarn-error.log*
 **/**/.terraform.lock.hcl
 **/**/*.tfstate
 **/**/target/
-
+# Terraform backup and crash logs
+crash.log
+*.tfstate.backup

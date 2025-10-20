@@ -1,4 +1,4 @@
-name: "Terraform Deploy Only "
+name: "Terraform-Deploy-Only-Project2-by-norah "
 
 on:
   workflow_dispatch:
@@ -14,8 +14,12 @@ jobs:
         working-directory: TFmain
 
     env:
-      TF_VAR_sql_admin_password: ${{ secrets.SQL_ADMIN_PASSWORD }}
-    
+      ARM_CLIENT_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientId }}
+      ARM_CLIENT_SECRET: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }}
+      ARM_SUBSCRIPTION_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).subscriptionId }}
+      ARM_TENANT_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).tenantId }}
+      DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4

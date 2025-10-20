@@ -1,4 +1,4 @@
-name: "Build & Push Backend - Project 2"
+name: "Build & Push Backend - Project2-by-norah"
 
 on:
   push:
