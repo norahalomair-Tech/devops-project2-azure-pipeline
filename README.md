@@ -64,38 +64,51 @@ Before deploying, ensure you have:
 All infrastructure code is inside the `TFmain/` directory
 You can deploy locally or automatically via the GitHub Actions workflow
 
-```bash
+
 cd TFmain
 terraform init
 terraform plan
-terraform apply -auto-approve```
----
+terraform apply -auto-approve
+-----
 ## How to Validate the Deployment
 
-After the GitHub Actions workflows complete successfully:
+After the GitHub Actions workflows complete successfully, follow these steps to validate your deployment:
 
-1. Get the Application Gateway IP
+---
 
-From Terraform output (app_gateway_public_ip) or Azure Portal → Application Gateway → public IP
+### Get the Application Gateway Public IP
 
-2. Test Frontend Access
+You can find it in either of these ways:
 
-Open the frontend in your browser:
+- From **Terraform output** → `app_gateway_public_ip`
+- Or via **Azure Portal** →  
+  **Application Gateway** → **Frontend public IP**
 
+---
+
+### Test the Frontend Application
+
+Open your browser and navigate to:
 ``http://<App-Gateway-IP>/``
 
-Expected: The Burger Builder UI should load correctly.
+ **Expected Result:**  
+The **Burger Builder UI** should load successfully.
 
-3. Test Backend API Health
+---
+
+###  Test the Backend API Health
+
+To confirm the backend is reachable through the Application Gateway, visit:
 
 ``http://<App-Gateway-IP>/api/health``
 
-Expected response:
-
-``{
+**Expected Response:**
+``json
+{
   "status": "UP"
-}``
-----
+}
+``
+
 ## Application Logs and Monitoring
 In Azure Portal:
 
@@ -110,7 +123,7 @@ App Service CPU > 70%
 SQL DTU/CPU > 80%
 
 Application Gateway backend health < 100%
--------
+
  ## Troubleshooting
 If the backend probe fails:
 
@@ -122,5 +135,5 @@ Review probe path /api/health configuration
 -------
 When finished, destroy the environment to avoid Azure charges:
 
-cd TFmain``
-terraform destroy -auto-approve``
+``cd TFmain``
+``terraform destroy -auto-approve``
