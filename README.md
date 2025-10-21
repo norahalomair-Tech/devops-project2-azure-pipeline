@@ -65,11 +65,15 @@ All infrastructure code is inside the `TFmain/` directory
 You can deploy locally or automatically via the GitHub Actions workflow
 
 
-cd TFmain
-terraform init
-terraform plan
-terraform apply -auto-approve
------
+``cd TFmain``
+
+``terraform init``
+
+``terraform plan``
+
+``terraform apply -auto-approve``
+
+
 ## How to Validate the Deployment
 
 After the GitHub Actions workflows complete successfully, follow these steps to validate your deployment:
@@ -108,6 +112,10 @@ To confirm the backend is reachable through the Application Gateway, visit:
   "status": "UP"
 }
 ``
+
+You can also use curl to test the endpoints directly from your terminal
+
+``curl http://<App-Gateway-IP>/api/health``
 
 ## Application Logs and Monitoring
 In Azure Portal:
